@@ -44,7 +44,10 @@ const loginUser = passport.authenticate('local',{
 })
 
 const logoutUser =(req,res)=>{
-    res.send('logout user')
+    req.logout((err)=>{
+        if (err) return res.send("Ocurrio un error") 
+        res.redirect('/');
+    });
 }
 
 module.exports={
