@@ -2,7 +2,7 @@
 <section class="page-section mt-5" id="login">
     <div class="container">
         <!-- Contact Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">All my Portfolios</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">All my Portfolios {{user}}</h2>
         <!-- Icon Divider-->
         <div class="divider-custom">
             <div class="divider-custom-line"></div>
@@ -16,15 +16,15 @@
                 <div class="container">
                     <div class="text-end mb-3">
                         <a href="/portafolio/add" class="text-decoration-none">
-                            <button class="btn btn-success btn-xl" type="submit">Create new portfolio</button>
+                            <button class="btn btn-success btn-xl" type="submit">Create new portafolio</button>
                         </a>
                     </div>
                     <div class="row justify-content-center">
                         {{#each portfolios}}
                         <div class="col-md-6 col-lg-4 mb-2">
                             <div class="card h-100">
-                                <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" class="card-img-top"
-                                    alt="Skyscrapers" />
+                                <img src="{{image.secure_url}}" class="card-img-top"
+                                    alt="Skyscrapers" style="width: 100%; height: 25%;" />
                                 <div class="card-body">
                                     <h5 class="card-title text-decoration-underline">{{title}}</h5>
                                     <p class="card-text">{{description}}</p>

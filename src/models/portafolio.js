@@ -1,22 +1,30 @@
-const {Schema, model} = require('mongoose')
+const { Schema, model } = require('mongoose')
 
 const portafolioSchema = new Schema(
     {
-        title:{
-            type:String,
-            require:true
+        title: {
+            type: String,
+            require: true
         },
-        description:{
-            type:String,
-            require:true
+        description: {
+            type: String,
+            require: true
         },
-        category:{
-            type:String,
-            require:true
+        category: {
+            type: String,
+            require: true
+        },
+        user: {
+            type: String,
+            required: true
+        },
+        image:{
+            public_id:String,
+            secure_url:String
         }
     },
     {
-        timestamps:true
+        timestamps: true
     }
 )
 

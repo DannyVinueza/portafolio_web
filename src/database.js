@@ -8,7 +8,7 @@ connection = async ()=>{
             useUnifiedTopology:true,
             useNewUrlParser:true
         })
-        console.log("Databse is connected");
+        console.log("Database is connected");
     }catch(error){
         console.log(error);
     }

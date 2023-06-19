@@ -4,7 +4,7 @@ const { engine }  = require('express-handlebars')
 const methodOverride = require('method-override');
 const passport = require('passport');
 const session = require('express-session');
-
+const fileUpload = require('express-fileupload')
 
 //Inicializaciones
 const app = express();
@@ -23,6 +23,11 @@ app.engine('.hbs',engine({
 }))
 app.set('view engine','.hbs')
 
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './uploads'
+}));    
+
 // Middlewares
 app.use(express.urlencoded({extended:false}));
 app.use(methodOverride('_method'))
@@ -38,6 +43,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Variables globales
+app.use((req,res,next)=>{
+    res.locals.user = req.user?.name || null
+    next()
+})
 
 //Rutas
 app.get("/",(req,res)=>{
