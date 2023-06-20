@@ -49,32 +49,42 @@ const renderEditPortafolioForm =async(req,res)=>{
 }
 
 const updatePortafolio = async(req,res)=>{
+//Cargar la informacion del portafolio
+
     //Verificar el id del portafolio sea el mismo
     const portfolio = await Portfolio.findById(req.params.id).lean()
     //Si es TRUE continuar con la edicion y si es FALSE enviar a la ruta de portafolios
     
-    if(portfolio._id.toString() !== req.params.id) return res.redirect('/portafolios')
     
-    // if(req.files?.image) {
-    //     if(!(req.files?.image)) return res.send("Se requiere una imagen")
-    //     await deleteImage(portfolio.image.public_id)
-    //     const imageUpload = await uploadImage(req.files.image.tempFilePath)
-    //     const data ={
-    //         title:req.body.title || portfolio.name,
-    //         category: req.body.category || portfolio.category,
-    //         description:req.body.description || portfolio.description,
-    //         image : {
-    //         public_id:imageUpload.public_id,
-    //         secure_url:imageUpload.secure_url
-    //         }
-    //     }
-    //     await fs.unlink(req.files.image.tempFilePath)
-    //     await Portfolio.findByIdAndUpdate(req.params.id,data)
-    // }
-    // else{
-    //     const {title,category,description}= req.body
-    //     await Portfolio.findByIdAndUpdate(req.params.id,{title,category,description})
-    // }
+    if(req.files?.image) {
+        //Vamos a realizar la atualizacion de la imagen
+        
+        //Primero validamos que venga una imagen en el formulario
+        if(!(req.files?.image)) return res.send("Se requiere una imagen")
+        //Eliminar la imagen en cloudinary
+        await deleteImage(portfolio.image.public_id)
+        //Cargar la nueva imagen
+        const imageUpload = await uploadImage(req.files.image.tempFilePath)
+        //Costruir la data para actualizar en la BD
+        const data ={
+            title:req.body.title || portfolio.name,//Se mantenga todos lo que esta en los inputs
+            category: req.body.category || portfolio.category,
+            description:req.body.description || portfolio.description,
+            image : {
+            public_id:imageUpload.public_id,
+            secure_url:imageUpload.secure_url
+            }
+        }
+        //Eliminar la imagen temporal
+        await fs.unlink(req.files.image.tempFilePath)
+        //Actualizar en BD findByIdAndUpdate
+        await Portfolio.findByIdAndUpdate(req.params.id,data)
+    }
+    else{
+        //Vamos a hacer la actualizacion de los campos sin imagen
+        const {title,category,description}= req.body
+        await Portfolio.findByIdAndUpdate(req.params.id,{title,category,description})
+    }
     res.redirect('/portafolios')
 }
 
